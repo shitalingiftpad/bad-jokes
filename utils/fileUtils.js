@@ -13,6 +13,16 @@ const readJokesFromFile = async () => {
     }
 };
 
+const updateJokesFile = async (jokes) => {
+    try {
+        await fs.writeFile(jokesFilePath, JSON.stringify(jokes, null, 2));
+    } catch (error) {
+        console.error('Error updating jokes file:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     readJokesFromFile,
+    updateJokesFile,
 };
