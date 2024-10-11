@@ -3,14 +3,28 @@ export default class UI {
         this.jokeDisplay = document.getElementById('jokeDisplay');
         this.jokeList = document.getElementById('jokeList');
         this.messageDisplay = document.getElementById('messageDisplay');
+
+        this.editModal = document.getElementById('editModal');
+        this.editJokeInput = document.getElementById('editJokeInput');
+        this.saveEditButton = document.getElementById('saveEditButton');
+        this.closeModalButton = document.getElementById('closeModalButton');
+        this.closeModalButton.addEventListener('click', () => this.closeEditModal());
     }
 
-    showMessage(message) {
+    showMessage(message, type = 'success') {
         this.messageDisplay.textContent = message;
+        if (type === 'success') {
+            this.messageDisplay.classList.remove('message-error');
+            this.messageDisplay.classList.add('message-success');
+        } else if (type === 'error') {
+            this.messageDisplay.classList.remove('message-success');
+            this.messageDisplay.classList.add('message-error');
+        }
+
         this.messageDisplay.style.display = 'block';
         setTimeout(() => {
             this.messageDisplay.style.display = 'none';
-        }, 3000); 
+        }, 3000);
     }
 
     displayRandomJoke(jokes) {
@@ -49,5 +63,14 @@ export default class UI {
             jokeItem.appendChild(deleteIcon);
             this.jokeList.appendChild(jokeItem);
         });
+    }
+
+    showEditModal(jokeText) {
+        this.editJokeInput.value = jokeText;
+        this.editModal.style.display = 'flex';
+    }
+
+    closeEditModal() {
+        this.editModal.style.display = 'none';
     }
 }
