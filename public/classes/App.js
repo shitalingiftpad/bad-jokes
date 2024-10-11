@@ -26,6 +26,7 @@ export default class App {
         const jokes = await this.jokeManager.fetchJokes();
         // Pass the deleteJoke method as a callback
         this.ui.displayJokeList(jokes, this.deleteJoke.bind(this));
+        this.ui.displayJokeList(jokes, this.deleteJoke.bind(this), this.showEditModal.bind(this));
     }
 
     // Delete jokes from the server
@@ -45,5 +46,10 @@ export default class App {
         } catch (error) {
             console.error('Error deleting joke:', error);
         }
+    }
+
+    showEditModal(index, jokeText) {
+        this.currentEditIndex = index;
+        this.ui.showEditModal(jokeText);
     }
 }
