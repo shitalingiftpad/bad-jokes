@@ -172,3 +172,45 @@ button:hover {
     padding: 10px;
     font-size: 1em;
 }
+
+/* Styles for the add joke section */
+.add-joke-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.add-joke-section h2 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.5em;
+}
+
+.add-joke-section textarea {
+    width: 80%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.add-joke-section button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+}
+
+.add-joke-section button:hover {
+    background-color: #0056b3;
+}
+
