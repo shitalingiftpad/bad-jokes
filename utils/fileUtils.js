@@ -1,8 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-// const jokesFilePath = path.join(__dirname, '../jokes.txt');
-const jokesFilePath = path.join(__dirname, '../dev.txt');
+const jokesFilePath = path.join(__dirname, '../jokes.txt');
 const updateHistoryPath = path.join(__dirname, '../updateHistory.txt');
 const storeHistoryPath = path.join(__dirname, '../storeHistory.txt'); 
 const deleteHistoryPath = path.join(__dirname, '../deleteHistory.txt');
