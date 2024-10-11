@@ -24,6 +24,26 @@ export default class App {
     // Load jokes from the server and display them
     async loadJokes() {
         const jokes = await this.jokeManager.fetchJokes();
-        this.ui.displayJokeList(jokes);
+        // Pass the deleteJoke method as a callback
+        this.ui.displayJokeList(jokes, this.deleteJoke.bind(this));
+    }
+
+    // Delete jokes from the server
+    async deleteJoke(index) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/jokes/${index}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                this.ui.showMessage('Joke deleted successfully');
+                await this.loadJokes();
+            } else {
+                const data = await response.json();
+                this.ui.showMessage(data.message);  
+            }
+        } catch (error) {
+            console.error('Error deleting joke:', error);
+        }
     }
 }

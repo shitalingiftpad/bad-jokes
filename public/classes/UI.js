@@ -2,6 +2,15 @@ export default class UI {
     constructor() {
         this.jokeDisplay = document.getElementById('jokeDisplay');
         this.jokeList = document.getElementById('jokeList');
+        this.messageDisplay = document.getElementById('messageDisplay');
+    }
+
+    showMessage(message) {
+        this.messageDisplay.textContent = message;
+        this.messageDisplay.style.display = 'block';
+        setTimeout(() => {
+            this.messageDisplay.style.display = 'none';
+        }, 3000); 
     }
 
     displayRandomJoke(jokes) {

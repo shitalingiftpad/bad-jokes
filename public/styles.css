@@ -123,3 +123,14 @@ button:hover {
 .joke-display.show {
     background-color: #e0ffe0;
 }
+
+.message-display {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ec0707;
+    color: #ffffff;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
