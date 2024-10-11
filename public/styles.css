@@ -98,18 +98,26 @@ button:hover {
     transform: scale(1.02);
 }
 
-.joke-list .delete-button {
-    background-color: #dc3545;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.joke-item span {
+    flex-grow: 1;
+    margin-right: 10px;
 }
 
-.joke-list .delete-button:hover {
-    background-color: #c82333;
+.joke-item .edit-icon,
+.joke-item .delete-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #555;
+    font-size: 1.2em;
+    transition: color 0.3s;
+}
+
+.joke-item .edit-icon:hover {
+    color: #007bff; /* Blue for edit */
+}
+
+.joke-item .delete-icon:hover {
+    color: #dc3545; /* Red for delete */
 }
 
 .joke-display.show {
