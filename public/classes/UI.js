@@ -4,24 +4,17 @@ export default class UI {
         this.jokeList = document.getElementById('jokeList');
         this.addJokeButton = document.getElementById('addJokeButton');
         this.messageDisplay = document.getElementById('messageDisplay');
-
         this.editModal = document.getElementById('editModal');
         this.editJokeInput = document.getElementById('editJokeInput');
         this.saveEditButton = document.getElementById('saveEditButton');
         this.closeModalButton = document.getElementById('closeModalButton');
+
         this.closeModalButton.addEventListener('click', () => this.closeEditModal());
     }
 
     showMessage(message, type = 'success') {
         this.messageDisplay.textContent = message;
-        if (type === 'success') {
-            this.messageDisplay.classList.remove('message-error');
-            this.messageDisplay.classList.add('message-success');
-        } else if (type === 'error') {
-            this.messageDisplay.classList.remove('message-success');
-            this.messageDisplay.classList.add('message-error');
-        }
-
+        this.messageDisplay.className = type === 'success' ? 'message-success' : 'message-error';
         this.messageDisplay.style.display = 'block';
         setTimeout(() => {
             this.messageDisplay.style.display = 'none';
@@ -36,8 +29,6 @@ export default class UI {
 
         const randomIndex = Math.floor(Math.random() * jokes.length);
         this.jokeDisplay.textContent = jokes[randomIndex];
-        this.jokeDisplay.classList.add('show');
-        setTimeout(() => this.jokeDisplay.classList.remove('show'), 1000);
     }
 
     displayJokeList(jokes, deleteCallback, editCallback) {
@@ -59,9 +50,7 @@ export default class UI {
             deleteIcon.title = 'Delete';
             deleteIcon.addEventListener('click', () => deleteCallback(index));
 
-            jokeItem.appendChild(jokeText);
-            jokeItem.appendChild(editIcon);
-            jokeItem.appendChild(deleteIcon);
+            jokeItem.append(jokeText, editIcon, deleteIcon);
             this.jokeList.appendChild(jokeItem);
         });
     }
@@ -73,5 +62,21 @@ export default class UI {
 
     closeEditModal() {
         this.editModal.style.display = 'none';
+    }
+
+    getNewJokeInput() {
+        return document.getElementById('newJoke').value.trim();
+    }
+
+    clearNewJokeInput() {
+        document.getElementById('newJoke').value = '';
+    }
+
+    getEditJokeInput() {
+        return this.editJokeInput.value.trim();
+    }
+
+    onEditSave(callback) {
+        this.saveEditButton.addEventListener('click', callback);
     }
 }
