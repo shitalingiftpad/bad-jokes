@@ -11,12 +11,20 @@ export default class UI {
         this.closeModalButton.addEventListener('click', () => this.closeEditModal());
     }
 
-    showMessage(message) {
+    showMessage(message, type = 'success') {
         this.messageDisplay.textContent = message;
+        if (type === 'success') {
+            this.messageDisplay.classList.remove('message-error');
+            this.messageDisplay.classList.add('message-success');
+        } else if (type === 'error') {
+            this.messageDisplay.classList.remove('message-success');
+            this.messageDisplay.classList.add('message-error');
+        }
+
         this.messageDisplay.style.display = 'block';
         setTimeout(() => {
             this.messageDisplay.style.display = 'none';
-        }, 3000); 
+        }, 3000);
     }
 
     displayRandomJoke(jokes) {

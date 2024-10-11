@@ -127,12 +127,20 @@ button:hover {
 .message-display {
     margin-top: 20px;
     padding: 10px;
-    background-color: #ec0707;
     color: #ffffff;
-    border: 1px solid #c3e6cb;
     border-radius: 5px;
     display: none; /* Hidden by default */
     transition: opacity 0.3s ease;
+}
+
+.message-error {
+    background-color: #ec0707; /* Red background for errors */
+    border: 1px solid #d00;
+}
+
+.message-success {
+    background-color: #28a745; /* Green background for success */
+    border: 1px solid #218838;
 }
 
 /* Modal styles */
