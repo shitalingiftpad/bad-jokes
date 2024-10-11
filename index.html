@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jar of Bad Jokes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Jar of Bad Jokes 😂</h1>
+        
+        <section class="joke-section">
+            <h2>Need a Laugh?</h2>
+            <button id="randomJokeButton">Tell me a joke!</button>
+            <div id="jokeDisplay" class="joke-display">Click the button for a joke!</div>
+        </section>
+        
+        <section class="add-joke-section">
+            <h2>Add Your Own Bad Joke</h2>
+            <textarea id="newJoke" placeholder="Enter your bad joke here..." rows="4"></textarea>
+            <button id="addJokeButton">Add Joke</button>
+        </section>
+        
+        <section class="list-section">
+            <h2>Your Joke Collection</h2>
+            <div id="jokeList" class="joke-list"></div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
