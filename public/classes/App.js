@@ -5,128 +5,82 @@ export default class App {
     constructor() {
         this.jokeManager = new JokeManager();
         this.ui = new UI();
+        this.currentEditIndex = null;
         this.initialize();
     }
 
-    // Initialize the app by loading jokes and binding events
     async initialize() {
-        await this.loadJokes();
+        await this.handleErrors(() => this.loadJokes());
         this.bindEvents();
     }
 
-    // Bind event listeners
     bindEvents() {
-        document.getElementById('randomJokeButton').addEventListener('click', () => {
+        this.attachEvent('randomJokeButton', 'click', () => {
             this.ui.displayRandomJoke(this.jokeManager.getJokes());
         });
 
-        document.getElementById('addJokeButton').addEventListener('click', () => {
-            const newJoke = document.getElementById('newJoke').value.trim();
+        this.attachEvent('addJokeButton', 'click', async () => {
+            const newJoke = this.ui.getNewJokeInput();
             if (newJoke) {
-                this.storeJoke(newJoke);
+                await this.handleErrors(() => this.storeJoke(newJoke));
             } else {
                 this.ui.showMessage('Please enter a joke before adding.', 'error');
             }
         });
 
-        this.ui.saveEditButton.addEventListener('click', () => this.saveEditedJoke());
+        this.ui.onEditSave(() => this.handleErrors(() => this.saveEditedJoke()));
     }
 
-    // Load jokes from the server and display them
+    attachEvent(elementId, event, handler) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.addEventListener(event, handler);
+        }
+    }
+
+    async handleErrors(action) {
+        try {
+            await action();
+        } catch (error) {
+            this.ui.showMessage(error.message || 'An unexpected error occurred', 'error');
+            console.error(error);
+        }
+    }
+
     async loadJokes() {
         const jokes = await this.jokeManager.fetchJokes();
-        // Pass the deleteJoke method as a callback
-        this.ui.displayJokeList(jokes, this.deleteJoke.bind(this));
         this.ui.displayJokeList(jokes, this.deleteJoke.bind(this), this.showEditModal.bind(this));
     }
 
-    // Delete jokes from the server
-    async deleteJoke(index) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/jokes/${index}`, {
-                method: 'DELETE',
-            });
+    async storeJoke(joke) {
+        await this.jokeManager.addJoke(joke);
+        this.ui.showMessage('Joke added successfully.', 'success');
+        this.ui.clearNewJokeInput();
+        await this.loadJokes();
+    }
 
-            if (response.ok) {
-                this.ui.showMessage('Joke deleted successfully.', 'success');
-                await this.loadJokes();
-            } else {
-                const data = await response.json();
-                this.ui.showMessage(data.message, 'error');  
-            }
-        } catch (error) {
-            console.error('Error deleting joke:', error);
-        }
+    async deleteJoke(index) {
+        await this.jokeManager.deleteJoke(index);
+        this.ui.showMessage('Joke deleted successfully.', 'success');
+        await this.loadJokes();
     }
 
     async showEditModal(index) {
-        this.currentEditIndex = index; 
-
-        try {
-            // Fetch the current joke from the server
-            const response = await fetch(`http://localhost:3000/api/jokes/${index}`);
-
-            if (response.ok) {
-                const { joke } = await response.json();
-                this.ui.showEditModal(joke);
-            } else {
-                this.ui.showMessage('Failed to load joke for editing.', 'error');
-            }
-        } catch (error) {
-            this.ui.showMessage('Error fetching joke.', 'error');
-            console.error('Error fetching joke:', error);
-        }
+        const joke = this.jokeManager.getJokes()[index];
+        this.ui.showEditModal(joke);
+        this.currentEditIndex = index;
     }
 
     async saveEditedJoke() {
-        const updatedJoke = this.ui.editJokeInput.value.trim();
-
+        const updatedJoke = this.ui.getEditJokeInput();
         if (!updatedJoke) {
-            this.ui.showMessage('Joke cannot be empty.');
+            this.ui.showMessage('Joke cannot be empty.', 'error');
             return;
         }
 
-        try {
-            const response = await fetch(`http://localhost:3000/api/jokes/${this.currentEditIndex}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ joke: updatedJoke }),
-            });
-
-            if (response.ok) {
-                console.log('Joke updated successfully');
-                this.ui.showMessage('Joke updated successfully.', 'success');
-                this.ui.closeEditModal();
-                await this.loadJokes();
-            } else {
-                this.ui.showMessage('Failed to update joke.', 'error');
-            }
-        } catch (error) {
-            this.ui.showMessage('Error updating joke.', 'error');
-            console.error('Error updating joke:', error);
-        }
-    }
-
-    async storeJoke(joke) {
-        try {
-            const response = await fetch(`http://localhost:3000/api/jokes`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ joke }),
-            });
-
-            if (response.ok) {
-                console.log('Joke added successfully');
-                this.ui.showMessage('Joke added successfully.', 'success');
-                document.getElementById('newJoke').value = '';
-                await this.loadJokes(); 
-            } else {
-                this.ui.showMessage('Failed to add joke.', 'error');
-                console.error('Failed to add joke');
-            }
-        } catch (error) {
-            this.ui.showMessage('Error adding joke.', 'error');
-            console.error('Error adding joke:', error);
-        }
+        await this.jokeManager.updateJoke(this.currentEditIndex, updatedJoke);
+        this.ui.showMessage('Joke updated successfully.', 'success');
+        this.ui.closeEditModal();
+        await this.loadJokes();
     }
 }
