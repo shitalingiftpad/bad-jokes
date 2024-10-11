@@ -3,6 +3,7 @@ const path = require('path');
 
 // const jokesFilePath = path.join(__dirname, '../jokes.txt');
 const jokesFilePath = path.join(__dirname, '../dev.txt');
+const updateHistoryPath = path.join(__dirname, '../updateHistory.txt');
 
 const readJokesFromFile = async () => {
     try {
@@ -23,7 +24,18 @@ const updateJokesFile = async (jokes) => {
     }
 };
 
+const logUpdateHistory = async (updateInfo) => {
+    const logEntry = `Joke ID: ${updateInfo.id}, Updated Joke: "${updateInfo.updatedJoke}", IP: ${updateInfo.ip}, Timestamp: ${updateInfo.timestamp}\n`;
+    try {
+        await fs.appendFile(updateHistoryPath, logEntry);
+    } catch (error) {
+        console.error('Error logging update history:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     readJokesFromFile,
     updateJokesFile,
+    logUpdateHistory,
 };
