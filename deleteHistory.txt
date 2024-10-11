@@ -2,3 +2,4 @@ Joke ID: 1, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:12:50.3
 Joke ID: 1, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:14:05.404Z
 Joke ID: 0, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:14:14.141Z
 Joke ID: 0, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:15:03.109Z
+Joke ID: 2, IP: ::1, Timestamp: 2024-10-11T05:51:59.207Z
