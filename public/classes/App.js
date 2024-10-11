@@ -20,6 +20,15 @@ export default class App {
             this.ui.displayRandomJoke(this.jokeManager.getJokes());
         });
 
+        document.getElementById('addJokeButton').addEventListener('click', () => {
+            const newJoke = document.getElementById('newJoke').value.trim();
+            if (newJoke) {
+                this.storeJoke(newJoke);
+            } else {
+                this.ui.showMessage('Please enter a joke before adding.', 'error');
+            }
+        });
+
         this.ui.saveEditButton.addEventListener('click', () => this.saveEditedJoke());
     }
 
@@ -95,6 +104,29 @@ export default class App {
         } catch (error) {
             this.ui.showMessage('Error updating joke.', 'error');
             console.error('Error updating joke:', error);
+        }
+    }
+
+    async storeJoke(joke) {
+        try {
+            const response = await fetch(`http://localhost:3000/api/jokes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ joke }),
+            });
+
+            if (response.ok) {
+                console.log('Joke added successfully');
+                this.ui.showMessage('Joke added successfully.', 'success');
+                document.getElementById('newJoke').value = '';
+                await this.loadJokes(); 
+            } else {
+                this.ui.showMessage('Failed to add joke.', 'error');
+                console.error('Failed to add joke');
+            }
+        } catch (error) {
+            this.ui.showMessage('Error adding joke.', 'error');
+            console.error('Error adding joke:', error);
         }
     }
 }

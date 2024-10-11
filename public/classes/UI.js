@@ -2,6 +2,7 @@ export default class UI {
     constructor() {
         this.jokeDisplay = document.getElementById('jokeDisplay');
         this.jokeList = document.getElementById('jokeList');
+        this.addJokeButton = document.getElementById('addJokeButton');
         this.messageDisplay = document.getElementById('messageDisplay');
 
         this.editModal = document.getElementById('editModal');
