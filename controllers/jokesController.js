@@ -1,4 +1,5 @@
-const { readJokesFromFile, updateJokesFile, logUpdateHistory } = require('../utils/fileUtils');
+const { get } = require('../routes/jokesRoutes');
+const { readJokesFromFile, updateJokesFile, logUpdateHistory, logStoreHistory, logDeleteHistory } = require('../utils/fileUtils');
 
 const getAllJokes = async (req, res) => {
     try {
@@ -18,6 +19,14 @@ const deleteJoke = async (req, res) => {
         }
         jokes.splice(id, 1);
         await updateJokesFile(jokes);
+        const ip = req.ip || req.connection.remoteAddress || 'Unknown IP';
+        const deleteInfo = {
+            id,
+            deletedJoke: jokes[id],
+            ip,
+            timestamp: new Date().toISOString()
+        };
+        await logDeleteHistory(deleteInfo);
         res.json({ message: 'Joke deleted successfully.' });
     } catch (error) {
         console.error('Error deleting joke:', error);
@@ -70,9 +79,34 @@ const updateJokeById = async (req, res) => {
     }
 };
 
+const addJoke = async (req, res) => {
+    const { joke } = req.body;
+    if (!joke || typeof joke !== 'string' || joke.trim() === '') {
+        return res.status(400).json({ message: 'Invalid joke content.' });
+    }
+    try {
+        const jokes = await readJokesFromFile();
+        jokes.push(joke.trim());
+        await updateJokesFile(jokes);
+        const ip = req.ip || req.connection.remoteAddress || 'Unknown IP';
+        const storeInfo = {
+            joke: joke.trim(),
+            ip,
+            timestamp: new Date().toISOString()
+        };
+        await logStoreHistory(storeInfo);
+        res.status(201).json({ message: 'Joke added successfully.' });
+    } catch (error) {
+        console.error('Error adding joke:', error);
+        res.status(500).json({ message: 'Failed to add joke.' });
+    }
+};
+
+
 module.exports = {
     getAllJokes,
     deleteJoke,
     getJokeById,
     updateJokeById,
+    addJoke,
 };

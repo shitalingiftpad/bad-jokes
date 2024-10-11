@@ -1,9 +1,10 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-// const jokesFilePath = path.join(__dirname, '../jokes.txt');
-const jokesFilePath = path.join(__dirname, '../dev.txt');
+const jokesFilePath = path.join(__dirname, '../jokes.txt');
 const updateHistoryPath = path.join(__dirname, '../updateHistory.txt');
+const storeHistoryPath = path.join(__dirname, '../storeHistory.txt'); 
+const deleteHistoryPath = path.join(__dirname, '../deleteHistory.txt');
 
 const readJokesFromFile = async () => {
     try {
@@ -34,8 +35,31 @@ const logUpdateHistory = async (updateInfo) => {
     }
 };
 
+const logStoreHistory = async (storeInfo) => {
+    const logEntry = `Joke: "${storeInfo.joke}", IP: ${storeInfo.ip}, Timestamp: ${storeInfo.timestamp}\n`;
+    try {
+        await fs.appendFile(storeHistoryPath, logEntry);
+    } catch (error) {
+        console.error('Error logging store history:', error);
+        throw error;
+    }
+};
+
+const logDeleteHistory = async (deleteInfo) => {
+    const logEntry = `Joke ID: ${deleteInfo.id}, IP: ${deleteInfo.ip}, Timestamp: ${deleteInfo.timestamp}\n`;
+    try {
+        await fs.appendFile(deleteHistoryPath, logEntry);
+    } catch (error) {
+        console.error('Error logging delete history:', error);
+        throw error;
+    }
+}
+
+
 module.exports = {
     readJokesFromFile,
     updateJokesFile,
     logUpdateHistory,
+    logStoreHistory,
+    logDeleteHistory,
 };

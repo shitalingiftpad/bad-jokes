@@ -1,0 +1,4 @@
+Joke ID: 1, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:12:50.394Z
+Joke ID: 1, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:14:05.404Z
+Joke ID: 0, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:14:14.141Z
+Joke ID: 0, Deleted Joke: "undefined", IP: ::1, Timestamp: 2024-10-11T05:15:03.109Z
