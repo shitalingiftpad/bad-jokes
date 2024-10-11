@@ -36,10 +36,11 @@ export default class App {
             });
 
             if (response.ok) {
-                console.log('Joke deleted successfully');
-                await this.loadJokes(); // Reload jokes after deletion
+                this.ui.showMessage('Joke deleted successfully');
+                await this.loadJokes();
             } else {
-                console.error('Failed to delete joke');
+                const data = await response.json();
+                this.ui.showMessage(data.message);  
             }
         } catch (error) {
             console.error('Error deleting joke:', error);

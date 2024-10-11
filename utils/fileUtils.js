@@ -1,7 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const jokesFilePath = path.join(__dirname, '../jokes.txt');
+// const jokesFilePath = path.join(__dirname, '../jokes.txt');
+const jokesFilePath = path.join(__dirname, '../dev.txt');
 
 const readJokesFromFile = async () => {
     try {
